@@ -3,6 +3,7 @@ pragma solidity ^0.8.18;
 
 import {Script} from "forge-std/Script.sol";
 import {BasicNFT} from "../src/BasicNFT.sol";
+import {DynamicNFT} from "../src/DynamicNFT.sol";
 import {DevOpsTools} from "lib/foundry-devops/src/DevOpsTools.sol";
 
 contract MintBasicNFT is Script {
@@ -11,8 +12,7 @@ contract MintBasicNFT is Script {
     uint256 deployerKey;
 
     function run() external {
-        address mostRecentlyDeployedBasicNft = DevOpsTools
-            .get_most_recent_deployment("BasicNft", block.chainid);
+        address mostRecentlyDeployedBasicNft = DevOpsTools.get_most_recent_deployment("BasicNft", block.chainid);
         mintNftOnContract(mostRecentlyDeployedBasicNft);
     }
 
@@ -21,5 +21,23 @@ contract MintBasicNFT is Script {
         BasicNFT(basicNftAddress).mintNFT(PUG_URI);
         vm.stopBroadcast();
     }
+
+ 
 }
 
+
+contract MintDynamicNFT is Script {
+   
+    function run() external {
+        address mostRecentlyDeployedDynamicNft = DevOpsTools.get_most_recent_deployment("DynamicNFT", block.chainid);
+        mintNftOnContract(mostRecentlyDeployedDynamicNft);
+    }
+
+    function mintNftOnContract(address dynamicNftAddress) public {
+        vm.startBroadcast();
+        DynamicNFT(dynamicNftAddress).mintNFT();
+        vm.stopBroadcast();
+    }
+
+ 
+}
